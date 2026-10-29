@@ -1,26 +1,104 @@
 @import "tailwindcss";
 
+/*
+  Theme is one attribute on <html>: absent means "follow the system".
+  Light values are the default, so the system setting and a forced light both
+  resolve to the same tokens. The dark block is written twice because CSS can't
+  express "media query OR attribute" in a single selector.
+
+  Only the four decisions from the project doc live here: one blue accent,
+  greyscale surfaces, and a border. Phase 4 adds direction colours.
+*/
 :root {
-  --background: #ffffff;
+  --surface: #ffffff;
+  --surface-muted: #f5f5f5;
   --foreground: #171717;
+  --muted-foreground: #6b7280;
+  --border: #e5e5e5;
+  --accent: #2563eb;
+  --accent-foreground: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --surface: #0a0a0b;
+    --surface-muted: #141416;
+    --foreground: #ededed;
+    --muted-foreground: #9ca3af;
+    --border: #26262a;
+    --accent: #3b82f6;
+    --accent-foreground: #ffffff;
+  }
+}
+
+:root[data-theme="dark"] {
+  --surface: #0a0a0b;
+  --surface-muted: #141416;
+  --foreground: #ededed;
+  --muted-foreground: #9ca3af;
+  --border: #26262a;
+  --accent: #3b82f6;
+  --accent-foreground: #ffffff;
 }
 
 @theme inline {
-  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
   --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
+:root {
+  color-scheme: light;
+}
+
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
   }
 }
 
-body {
-  background: var(--background);
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+/*
+  Clerk reads its own variables rather than ours. Declaring them as references
+  means its card, popovers and menus follow data-theme with no JS and no second
+  copy of the palette to keep in step.
+*/
+:root {
+  --clerk-color-background: var(--surface-muted);
+  --clerk-color-foreground: var(--foreground);
+  --clerk-color-muted-foreground: var(--muted-foreground);
+  --clerk-color-muted: var(--surface-muted);
+  --clerk-color-border: var(--border);
+  --clerk-color-input: var(--surface);
+  --clerk-color-input-foreground: var(--foreground);
+  --clerk-color-neutral: var(--foreground);
+  --clerk-color-primary: var(--accent);
+  --clerk-color-primary-foreground: var(--accent-foreground);
+  --clerk-color-ring: var(--accent);
+  --clerk-border-radius: 4px;
+  --clerk-font-family: var(--font-geist-sans);
+  --clerk-font-family-mono: var(--font-geist-mono);
+}
+
+/* Selected theme button, driven by the root attribute rather than React state. */
+:root:not([data-theme]) [data-theme-choice="system"],
+:root[data-theme="light"] [data-theme-choice="light"],
+:root[data-theme="dark"] [data-theme-choice="dark"] {
+  background: var(--surface-muted);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background: var(--surface);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
 }
