@@ -7,3 +7,5 @@ Help you understand any JS codebase
 ## UI
 
 ## Backend Processing
+https://youtu.be/-AkIj8TG3Uc?si=wvQeuq_apQ4zS5YS
+https://jsm.dev/carto-kit
